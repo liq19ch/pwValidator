@@ -2,8 +2,8 @@ package com.innova.pwValidator.prop;
 
 public enum Type {
 
-    LOWERCASE("^[a-z]$"),
-    NUMBER("^[0-9]$");
+    LOWERCASE("[a-z]"),
+    NUMBER("[0-9]");
 
     private String pattern;
 
