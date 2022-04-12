@@ -1,6 +1,6 @@
 package com.innova.pwValidator.service;
 
-import com.innova.pwValidator.prop.Rule;
+import com.innova.pwValidator.prop.Validation;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -13,16 +13,16 @@ import org.slf4j.Logger;
 public class PwValidationServiceImpl implements PwValidationService {
 
     @Autowired
-    private Rule rule;
+    private Validation validation;
 
     private final Logger logger = LoggerFactory.getLogger(PwValidationServiceImpl.class);
 
     @Override
     public boolean isValid(String pw) {
 
-        logger.info("validate password=>{} ", rule);
+        logger.info("validate password=>{} ", validation);
 
-        if (!rule.isValidate(pw)) {
+        if (!validation.isValidate(pw)) {
             logger.info(pw + " is invalid");
             return false;
         }

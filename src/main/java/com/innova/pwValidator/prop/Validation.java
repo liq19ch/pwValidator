@@ -13,12 +13,12 @@ import java.util.Map;
 import org.slf4j.Logger;
 
 @Component
-public class Rule {
+public class Validation {
 
     @Autowired
     private PwValidateProp pwValidateProp;
 
-    private final Logger logger = LoggerFactory.getLogger(Rule.class);
+    private final Logger logger = LoggerFactory.getLogger(Validation.class);
 
     private boolean isEmpty(String pw) {
         if (pw == null || pw.length() < 1) {
@@ -48,11 +48,16 @@ public class Rule {
             return false;
         }
         List<Type> types = pwValidateProp.getTypes();
+        StringBuilder sb = new StringBuilder();
         for (Type type : types) {
-            if (!pw.matches(type.getPattern())) {
-                logger.info("password doesn't match to =>{}", type);
-                return false;
+            if (sb.length() != 0) {
+                sb.append("|");
             }
+            sb.append(type.getPattern());
+        }
+        if (!pw.matches(sb.toString())) {
+            logger.info("password doesn't match to type");
+            return false;
         }
         return true;
     }
