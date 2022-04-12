@@ -1,10 +1,6 @@
 package com.innova.pwValidator.req;
 
-import com.innova.pwValidator.annotation.ValidateAll;
-
 import java.io.Serializable;
-
-import static com.innova.pwValidator.service.VerifyRegexConst.PATTERN_PASSWORD;
 
 public class PasswordReq implements Serializable {
 
