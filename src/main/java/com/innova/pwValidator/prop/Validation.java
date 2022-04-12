@@ -62,13 +62,9 @@ public class Validation {
         return true;
     }
 
-    private boolean isValidCount(String pw) {
-        if (isEmpty(pw)) {
-            return false;
-        }
-        Map<Type, Integer> requiredCountMap = pwValidateProp.getCountMap();
-        List<Type> types = pwValidateProp.getTypes();
+    private Map<Type, Integer> getCount(String pw) {
         Map<Type, Integer> countMap = new HashMap<>();
+        List<Type> types = pwValidateProp.getTypes();
 
         for (int i = 0; i < pw.length(); i++) {
             String s = String.valueOf(pw.charAt(i));
@@ -80,6 +76,15 @@ public class Validation {
                 break;
             }
         }
+        return countMap;
+    }
+
+    private boolean isValidCount(String pw) {
+        if (isEmpty(pw)) {
+            return false;
+        }
+        Map<Type, Integer> requiredCountMap = pwValidateProp.getCountMap();
+        Map<Type, Integer> countMap = getCount(pw);
 
         for (Map.Entry<Type, Integer> entry : requiredCountMap.entrySet()) {
             Type requiredType = entry.getKey();
@@ -89,7 +94,8 @@ public class Validation {
             }
             int requiredCount = entry.getValue();
             if (countMap.get(requiredType) < requiredCount) {
-                logger.info("password is only found count =>{} which doesn't match to required count =>{} of type => {}", countMap.get(requiredType), requiredCount, requiredType);
+                logger.info("password is only found count =>{} which doesn't match to required count =>{} of type => {}",
+                        countMap.get(requiredType), requiredCount, requiredType);
                 return false;
             }
         }
@@ -114,16 +120,22 @@ public class Validation {
         int end = -1;
         for (int i = 0; i < pw.length(); i++) {
             char c = pw.charAt(i);
-            if (j == -1 && end == -1 && linkedList.contains(c)) {
-                j = linkedList.indexOf(c);
-                end = linkedList.size() - j;
-                j++;
+            if (j == -1 && end == -1) {
+                if (linkedList.contains(c)) {
+                    j = linkedList.indexOf(c);
+                    end = linkedList.size();
+                    if (end - j  == 1) {
+                        return true;
+                    }
+                    j++;
+                }
+
                 linkedList.add(c);
                 continue;
             }
             if (c == linkedList.get(j)) {
                 j++;
-                if (j > end) {
+                if (j == end) {
                     return true;
                 }
             } else {
