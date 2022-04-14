@@ -4,10 +4,14 @@ import com.innova.pwValidator.prop.PatternType;
 import com.innova.pwValidator.prop.PwValidationSetting;
 import org.hamcrest.collection.IsMapContaining;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,8 +27,17 @@ class PatternValidationTest {
 
     @Autowired
     private PatternValidation patternValidation;
-    @Autowired
+    @Spy
     private PwValidationSetting pwValidationSetting;
+
+    @BeforeEach
+    void init() {
+        this.pwValidationSetting = new PwValidationSetting();
+        Map<PatternType, Integer> map = new HashMap<>();
+        map.put(LOWERCASE, 1);
+        map.put(NUMBER, 1);
+        pwValidationSetting.setMinCountMap(map);
+    }
 
     @Test
     void isValid() {
