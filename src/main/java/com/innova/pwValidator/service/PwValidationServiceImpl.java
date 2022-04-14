@@ -7,26 +7,44 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.slf4j.Logger;
 
+import javax.annotation.PostConstruct;
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 @Scope("prototype")
 @Component
 public class PwValidationServiceImpl implements PwValidationService {
 
-    @Autowired
-    private Validation validation;
+    private List<Validation> validationList = new ArrayList<>();
 
     private final Logger logger = LoggerFactory.getLogger(PwValidationServiceImpl.class);
 
     @Override
     public boolean isValid(String pw) {
 
-        logger.info("validate password=>{} ", validation);
+        logger.info("validate password=>{} ", pw);
 
-        if (!validation.isValid(pw)) {
-            logger.info("Password is invalid => {}", pw);
-            return false;
+        for (Validation validation : validationList) {
+            if (!validation.isValid(pw)) {
+                logger.info("Password is invalid => {} ", pw);
+                return false;
+            }
         }
         return true;
+    }
+
+    @Override
+    public PwValidationServiceImpl setUp(List<Class<? extends Validation>> validatorList) {
+        if (validatorList == null || validatorList.size() == 0) {
+            return this;
+        }
+
+        Set<Class<? extends Validation>> set = new HashSet<>(validatorList);
+        for (Class<? extends Validation> v : set) {
+            validationList.add()
+        }
+        return this;
     }
 
 }

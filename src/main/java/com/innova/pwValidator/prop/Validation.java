@@ -17,18 +17,12 @@ import javax.annotation.PostConstruct;
 public abstract class Validation {
 
     final Logger logger = LoggerFactory.getLogger(Validation.class);
-    private StringBuilder errorMsg = new StringBuilder();
 
 
     public abstract boolean isValid(String pw);
 
-    protected void setErrorMsg(String msg) {
-        errorMsg.append(msg);
-    }
 
-    public String getErrorMsg() {
-        return errorMsg.toString();
-    }
+    public abstract String getErrorMsg();
 
     protected boolean isEmpty(String pw) {
         if (pw == null || pw.length() < 1) {
