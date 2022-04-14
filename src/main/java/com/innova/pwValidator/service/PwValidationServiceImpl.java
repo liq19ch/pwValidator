@@ -1,50 +1,31 @@
 package com.innova.pwValidator.service;
 
-import com.innova.pwValidator.prop.Validation;
-import org.slf4j.LoggerFactory;
+import com.innova.pwValidator.prop.validation.EmptyValidation;
+import com.innova.pwValidator.prop.validation.LengthValidation;
+import com.innova.pwValidator.prop.validation.PatternValidation;
+import com.innova.pwValidator.prop.validation.SequenceValidation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.slf4j.Logger;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
-import java.util.stream.Collectors;
 
 
-@Scope("prototype")
-@Component
+@Service
 public class PwValidationServiceImpl implements PwValidationService {
 
-    private List<Validation> validationList = new ArrayList<>();
+    @Autowired
+    private Validator validator;
 
-    private final Logger logger = LoggerFactory.getLogger(PwValidationServiceImpl.class);
-
-    @Override
-    public boolean isValid(String pw) {
-
-        logger.info("validate password=>{} ", pw);
-
-        for (Validation validation : validationList) {
-            if (!validation.isValid(pw)) {
-                logger.info("Password is invalid => {} ", pw);
-                return false;
-            }
-        }
-        return true;
+    @PostConstruct
+    public void postConstruct() {
+        validator.addValidation(new EmptyValidation());
+        validator.addValidation(new LengthValidation());
+        validator.addValidation(new PatternValidation());
+        validator.addValidation(new SequenceValidation());
     }
 
     @Override
-    public PwValidationServiceImpl setUp(List<Class<? extends Validation>> validatorList) {
-        if (validatorList == null || validatorList.size() == 0) {
-            return this;
-        }
-
-        Set<Class<? extends Validation>> set = new HashSet<>(validatorList);
-        for (Class<? extends Validation> v : set) {
-            validationList.add()
-        }
-        return this;
+    public String valid(String pw) {
+        return validator.validate(pw);
     }
-
 }

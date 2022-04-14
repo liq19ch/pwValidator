@@ -1,11 +1,11 @@
-package com.innova.pwValidator.prop;
+package com.innova.pwValidator.prop.validation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EmptyValidation extends Validation{
+public class EmptyValidation extends Validation {
     private final Logger logger = LoggerFactory.getLogger(EmptyValidation.class);
 
     @Override

@@ -11,7 +11,7 @@ import java.util.Map;
 @Setter
 @Getter
 @Component
-public class PwValidateProp {
+public class PwValidationSetting {
 
 
     @Value("${rule.length.min}")

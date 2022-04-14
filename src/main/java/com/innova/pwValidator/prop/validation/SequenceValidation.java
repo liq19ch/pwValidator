@@ -1,15 +1,13 @@
-package com.innova.pwValidator.prop;
+package com.innova.pwValidator.prop.validation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 
 @Component
-public class SequenceValidation extends Validation{
+public class SequenceValidation extends Validation {
 
     private final Logger logger = LoggerFactory.getLogger(SequenceValidation.class);
 
@@ -30,7 +28,7 @@ public class SequenceValidation extends Validation{
         return "password is repeated with sequence. ";
     }
 
-    private boolean isRepeat(String pw) {
+    public boolean isRepeat(String pw) {
         LinkedList<Character> linkedList = new LinkedList<>();
         int j = -1;
         int end = -1;

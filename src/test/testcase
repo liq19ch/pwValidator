@@ -1,0 +1,64 @@
+Test Class      |   Test Function   |   Test Case Description   |     Test Data   |    Expected Result
+EmptyValidation     isValid()                                         ""               false
+                                                                      null             false
+                                                                      abc              true
+                                                                      1                true
+                                                                      12345            true
+
+LengthValidation    isValid()           length 12 == max              abcd123abcde     true
+                                        length 3 < min                abc              false
+                                        length 15 > max               abcd123abcde123  false
+                                        length 5 == min               abcd1            true
+                                        length min < 7 < max          abdc123          true
+
+SequenceValidation  isValid()                                         abab123          false
+                                                                      123ac23ba        true
+                                                                      11               false
+                                                                      11234            false
+                                                                      12323234         false
+                                                                      123242526        true
+                                                                      123121           true
+
+                    isRepeat()                                        abab123          true
+                                                                      123ac23ba        false
+                                                                      11               true
+                                                                      11234            true
+                                                                      12323234         true
+                                                                      123242526        false
+                                                                      123121           false
+
+PatternValidation   isValid()                                         abcde            false
+                                                                      12345            false
+                                                                      abcd1234         true
+                                                                      Adoe             false
+                                                                      ADO              false
+                                                                      /?_              false
+                                                                      哈囉             false
+                                                                      a1               true
+                                                                      11               false
+                                                                      aa               false
+                                                                      a1234            true
+                                                                      bbbb             false
+                                                                      ?_v1             false
+
+                    isValidType()                                     abcde            true
+                                                                      12345            true
+                                                                      abcd1234         true
+                                                                      Adoe             false
+                                                                      ADO              false
+                                                                      /?_              false
+                                                                      哈囉             false
+
+                    getCount()                                        ab12Acd1         {LOWERCASE: 4, NUMBER: 3}
+                                                                      ZZZZZ            {}
+                                                                      acce1234,dp      {LOWERCASE: 6, NUMBER: 4}
+                                                                      1111             {NUMBER: 4}
+                                                                      aa               {LOWERCASE: 2}
+
+                    isValidCount()                                    a1               true
+                                                                      11               false
+                                                                      aa               false
+                                                                      a1234            true
+                                                                      bbbb             false
+                                                                      ?_v1             true
+                                                                      ADER12           false

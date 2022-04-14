@@ -1,5 +1,7 @@
-package com.innova.pwValidator.prop;
+package com.innova.pwValidator.prop.validation;
 
+import com.innova.pwValidator.prop.PatternType;
+import com.innova.pwValidator.prop.PwValidationSetting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,7 @@ import static com.innova.pwValidator.prop.Def.MIN;
 @Component
 public class PatternValidation extends Validation {
     @Autowired
-    private PwValidateProp pwValidateProp;
+    private PwValidationSetting pwValidationSetting;
 
     private final Logger logger = LoggerFactory.getLogger(PatternValidation.class);
 
@@ -30,7 +32,7 @@ public class PatternValidation extends Validation {
             return false;
         }
 
-        return !isValidCount(pw, pwValidateProp.getMinCountMap(), MIN);
+        return !isValidCount(pw, pwValidationSetting.getMinCountMap(), MIN);
     }
 
     @Override
@@ -38,11 +40,11 @@ public class PatternValidation extends Validation {
         return errorMsg;
     }
 
-    private boolean isValidType(String pw) {
+    public boolean isValidType(String pw) {
         if (isEmpty(pw)) {
             return false;
         }
-        List<PatternType> types = pwValidateProp.getTypes();
+        List<PatternType> types = pwValidationSetting.getTypes();
         StringBuilder sb = new StringBuilder();
         for (PatternType type : types) {
             if (sb.length() != 0) {
@@ -57,9 +59,9 @@ public class PatternValidation extends Validation {
         return true;
     }
 
-    private Map<PatternType, Integer> getCount(String pw) {
+    public Map<PatternType, Integer> getCount(String pw) {
         Map<PatternType, Integer> countMap = new HashMap<>();
-        List<PatternType> types = pwValidateProp.getTypes();
+        List<PatternType> types = pwValidationSetting.getTypes();
 
         for (int i = 0; i < pw.length(); i++) {
             String s = String.valueOf(pw.charAt(i));
@@ -75,7 +77,7 @@ public class PatternValidation extends Validation {
     }
 
 
-    private boolean isValidCount(String pw, Map<PatternType, Integer> requiredMap, Def type) {
+    public boolean isValidCount(String pw, Map<PatternType, Integer> requiredMap, Def type) {
         if (isEmpty(pw)) {
             return false;
         }

@@ -1,6 +1,6 @@
 package com.innova.pwValidator.controller;
 
-import com.innova.pwValidator.prop.*;
+import com.innova.pwValidator.prop.validation.*;
 import com.innova.pwValidator.req.PasswordReq;
 import com.innova.pwValidator.service.PwValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,13 +17,14 @@ import java.util.List;
 public class ReqController {
 
     @Autowired
-    private ApplicationContext context;
+    private PwValidationService pwValidationService;
 
     @PostMapping("/pwValidate")
     public String register(@Valid @RequestBody PasswordReq passwordReq) {
-        PwValidationService pwValidationService = context.getBean(PwValidationService.class);
-        List<Class<? extends Validation>> list = Arrays. asList(EmptyValidation.class,LengthValidation.class,
-                PatternValidation.class, SequenceValidation.class);
-        pwValidationService.setUp(list);
+        String errorMessage = pwValidationService.valid(passwordReq.getPassword());
+        if (errorMessage == null || errorMessage == "") {
+            errorMessage = "success";
+        }
+        return errorMessage;
     }
 }

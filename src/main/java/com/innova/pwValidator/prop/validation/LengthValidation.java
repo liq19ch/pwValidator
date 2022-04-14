@@ -1,5 +1,7 @@
-package com.innova.pwValidator.prop;
+package com.innova.pwValidator.prop.validation;
 
+import com.innova.pwValidator.prop.PwValidationSetting;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class LengthValidation extends Validation {
+
     @Autowired
-    private PwValidateProp pwValidateProp;
+    private PwValidationSetting pwValidationSetting;
 
     private final Logger logger = LoggerFactory.getLogger(LengthValidation.class);
 
@@ -20,8 +23,8 @@ public class LengthValidation extends Validation {
         if (isEmpty(pw)) {
             return false;
         }
-        int min = pwValidateProp.getMinLength();
-        int max = pwValidateProp.getMaxLength();
+        int min = pwValidationSetting.getMinLength();
+        int max = pwValidationSetting.getMaxLength();
         if (min > max) {
             logger.debug("MinLength =>{} is bigger than MaxLength =>{}", min, max);
             errorMsg = "Properties setting is invalid in length. ";
