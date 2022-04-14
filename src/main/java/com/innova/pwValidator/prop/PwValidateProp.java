@@ -20,6 +20,6 @@ public class PwValidateProp {
     private int maxLength;
     @Value("#{'${rule.type}'.split(',)}")
     private List<PatternType> types;
-    @Value("${rule.min.count}")
-    private Map<PatternType, Integer> countMap;
+    @Value("${rule.type.min.count}")
+    private Map<PatternType, Integer> minCountMap;
 }
