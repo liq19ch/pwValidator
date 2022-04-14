@@ -1,12 +1,10 @@
 package com.innova.pwValidator.prop.validation;
 
-import com.innova.pwValidator.prop.Def;
 import com.innova.pwValidator.prop.PatternType;
 import com.innova.pwValidator.prop.PwValidationSetting;
 import org.hamcrest.collection.IsMapContaining;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -19,7 +17,6 @@ import static com.innova.pwValidator.prop.PatternType.NUMBER;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = PatternValidation.class)
 class PatternValidationTest {
@@ -66,10 +63,6 @@ class PatternValidationTest {
         assertThat(testCase.entrySet(), equalTo(expected.entrySet()));
         //Test size
         assertThat(testCase.values(), hasSize(size));
-        //Test map key
-        assertThat(testCase, IsMapContaining.hasKey(LOWERCASE));
-        assertThat(testCase, IsMapContaining.hasKey(NUMBER));
-
     }
 
     @Test
@@ -81,6 +74,8 @@ class PatternValidationTest {
         testMap(expected, testCase, 2);
         assertThat(testCase, IsMapContaining.hasEntry(LOWERCASE, 4));
         assertThat(testCase, IsMapContaining.hasEntry(NUMBER, 3));
+        assertThat(testCase, IsMapContaining.hasKey(LOWERCASE));
+        assertThat(testCase, IsMapContaining.hasKey(NUMBER));
 
         expected = new HashMap<>();
         testCase = patternValidation.getCount("ZZZZZ");
@@ -93,18 +88,22 @@ class PatternValidationTest {
         testMap(expected, testCase, 2);
         assertThat(testCase, IsMapContaining.hasEntry(LOWERCASE, 6));
         assertThat(testCase, IsMapContaining.hasEntry(NUMBER, 4));
+        assertThat(testCase, IsMapContaining.hasKey(LOWERCASE));
+        assertThat(testCase, IsMapContaining.hasKey(NUMBER));
 
         expected = new HashMap<>();
         expected.put(NUMBER, 4);
         testCase = patternValidation.getCount("1111");
         testMap(expected, testCase, 1);
         assertThat(testCase, IsMapContaining.hasEntry(NUMBER, 4));
+        assertThat(testCase, IsMapContaining.hasKey(NUMBER));
 
         expected = new HashMap<>();
         expected.put(LOWERCASE, 2);
         testCase = patternValidation.getCount("aa");
         testMap(expected, testCase, 1);
         assertThat(testCase, IsMapContaining.hasEntry(LOWERCASE, 2));
+        assertThat(testCase, IsMapContaining.hasKey(LOWERCASE));
 
     }
 

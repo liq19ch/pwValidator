@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.innova.pwValidator.prop.Def;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import static com.innova.pwValidator.prop.Def.MAX;
 import static com.innova.pwValidator.prop.Def.MIN;
 
 @Component
+@ComponentScan("com.innova")
 public class PatternValidation extends Validation {
     @Autowired
     private PwValidationSetting pwValidationSetting;
@@ -46,12 +48,12 @@ public class PatternValidation extends Validation {
         }
         List<PatternType> types = pwValidationSetting.getTypes();
         StringBuilder sb = new StringBuilder();
+        sb.append("[");
+
         for (PatternType type : types) {
-            if (sb.length() != 0) {
-                sb.append("|");
-            }
             sb.append(type.getPattern());
         }
+        sb.append("]+");
         if (!pw.matches(sb.toString())) {
             logger.info("password doesn't match to type");
             return false;
@@ -66,7 +68,8 @@ public class PatternValidation extends Validation {
         for (int i = 0; i < pw.length(); i++) {
             String s = String.valueOf(pw.charAt(i));
             for (PatternType type : types) {
-                if (!s.matches(type.getPattern())) {
+                String pattern = "[" + type.getPattern() + "]+";
+                if (!s.matches(pattern)) {
                     continue;
                 }
                 countMap.put(type, countMap.getOrDefault(type, 0) + 1);

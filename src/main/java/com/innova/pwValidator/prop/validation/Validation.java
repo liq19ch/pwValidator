@@ -16,7 +16,7 @@ public abstract class Validation {
     public abstract String getErrorMsg();
 
     protected boolean isEmpty(String pw) {
-        if (pw == null || pw == "") {
+        if (pw == null || pw.equals("")) {
             return true;
         }
         return false;
