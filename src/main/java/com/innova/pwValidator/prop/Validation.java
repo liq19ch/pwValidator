@@ -12,7 +12,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 
-public abstract class Validation implements EmptyBehavior, ErrorBehavior{
+public abstract class Validation implements ErrorBehavior{
 
     final Logger logger = LoggerFactory.getLogger(Validation.class);
 
@@ -25,8 +25,7 @@ public abstract class Validation implements EmptyBehavior, ErrorBehavior{
         return "";
     }
 
-    @Override
-    public boolean isEmpty(String pw) {
+    protected boolean isEmpty(String pw) {
         if (pw == null || pw.length() < 1) {
             logger.info("password is empty");
             return true;
