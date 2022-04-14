@@ -3,12 +3,14 @@ package com.innova.pwValidator.prop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.innova.pwValidator.prop.Def;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PatternValidation extends Validation{
+
+public class PatternValidation extends Validation {
     @Autowired
     private PwValidateProp pwValidateProp;
 
@@ -16,7 +18,7 @@ public class PatternValidation extends Validation{
 
     @Override
     public boolean isValid(String pw) {
-        return isValidType(pw) && isValidCount(pw, pwValidateProp.getMinCountMap());
+        return isValidType(pw) && isValidCount(pw, pwValidateProp.getMinCountMap(), MIN);
     }
 
     private boolean isValidType(String pw) {
@@ -33,6 +35,7 @@ public class PatternValidation extends Validation{
         }
         if (!pw.matches(sb.toString())) {
             logger.info("password doesn't match to type");
+            setErrorMsg("password doesn't match to type. ");
             return false;
         }
         return true;
@@ -55,7 +58,8 @@ public class PatternValidation extends Validation{
         return countMap;
     }
 
-    private boolean isValidCount(String pw, Map<PatternType, Integer> requiredMap) {
+
+    private boolean isValidCount(String pw, Map<PatternType, Integer> requiredMap, Def type) {
         if (isEmpty(pw)) {
             return false;
         }
@@ -65,13 +69,24 @@ public class PatternValidation extends Validation{
             PatternType requiredType = entry.getKey();
             if (!countMap.containsKey(requiredType)) {
                 logger.info("password doesn't contain type =>{}", requiredType);
+                setErrorMsg("password doesn't contain specific type. ");
                 return false;
             }
             int requiredCount = entry.getValue();
-            if (countMap.get(requiredType) < requiredCount) {
-                logger.info("password is found count =>{} which doesn't match to required count =>{} of type => {}",
-                        countMap.get(requiredType), requiredCount, requiredType);
-                return false;
+            if (type.equals(MIN)) {
+                if (countMap.get(requiredType) < requiredCount) {
+                    logger.info("password is only found count =>{} which doesn't match to min required count =>{} of type => {}",
+                            countMap.get(requiredType), requiredCount, requiredType);
+                    setErrorMsg("password doesn't meet the count of types. ");
+                    return false;
+                }
+            } else if (type.equals(MAX)) {
+                if (countMap.get(requiredType) > requiredCount) {
+                    logger.info("password is found count =>{} which doesn't match to max required count =>{} of type => {}",
+                            countMap.get(requiredType), requiredCount, requiredType);
+                    setErrorMsg("password is over the the count of types. ");
+                    return false;
+                }
             }
         }
 

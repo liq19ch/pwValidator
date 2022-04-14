@@ -12,22 +12,26 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 
-public abstract class Validation implements ErrorBehavior{
+import javax.annotation.PostConstruct;
+
+public abstract class Validation {
 
     final Logger logger = LoggerFactory.getLogger(Validation.class);
+    private StringBuilder errorMsg = new StringBuilder();
+
 
     public abstract boolean isValid(String pw);
 
-    @Override
-    public String msg(){
-        // customize
+    protected void setErrorMsg(String msg) {
+        errorMsg.append(msg);
+    }
 
-        return "";
+    public String getErrorMsg() {
+        return errorMsg.toString();
     }
 
     protected boolean isEmpty(String pw) {
         if (pw == null || pw.length() < 1) {
-            logger.info("password is empty");
             return true;
         }
         return false;

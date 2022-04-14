@@ -17,6 +17,7 @@ public class SequenceValidation extends Validation{
         }
         if (isRepeat(pw)) {
             logger.info("password is repeated");
+            setErrorMsg("password is repeated with sequence. ");
             return false;
         }
         return true;

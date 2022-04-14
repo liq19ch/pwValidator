@@ -4,11 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class LengthValidation extends Validation{
+public class LengthValidation extends Validation {
     @Autowired
     private PwValidateProp pwValidateProp;
 
     private final Logger logger = LoggerFactory.getLogger(LengthValidation.class);
+
 
     @Override
     public boolean isValid(String pw) {
@@ -18,9 +19,12 @@ public class LengthValidation extends Validation{
         int min = pwValidateProp.getMinLength();
         int max = pwValidateProp.getMaxLength();
         if (min > max) {
-            // exc
+            logger.debug("MinLength =>{} is bigger than MaxLength =>{}" , min, max);
+            setErrorMsg("Properties setting is invalid in length. ");
+            return false;
         }
         if (pw.length() < min || pw.length() > max) {
+            setErrorMsg("Password length is invalid. ");
             return false;
         }
         return true;
