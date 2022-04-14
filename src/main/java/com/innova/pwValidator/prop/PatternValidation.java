@@ -16,7 +16,7 @@ public class PatternValidation extends Validation{
 
     @Override
     public boolean isValid(String pw) {
-        return isValidType(pw) && isValidCount(pw);
+        return isValidType(pw) && isValidCount(pw, pwValidateProp.getMinCountMap());
     }
 
     private boolean isValidType(String pw) {
@@ -55,14 +55,13 @@ public class PatternValidation extends Validation{
         return countMap;
     }
 
-    private boolean isValidCount(String pw) {
+    private boolean isValidCount(String pw, Map<PatternType, Integer> requiredMap) {
         if (isEmpty(pw)) {
             return false;
         }
-        Map<PatternType, Integer> requiredCountMap = pwValidateProp.getCountMap();
         Map<PatternType, Integer> countMap = getCount(pw);
 
-        for (Map.Entry<PatternType, Integer> entry : requiredCountMap.entrySet()) {
+        for (Map.Entry<PatternType, Integer> entry : requiredMap.entrySet()) {
             PatternType requiredType = entry.getKey();
             if (!countMap.containsKey(requiredType)) {
                 logger.info("password doesn't contain type =>{}", requiredType);
@@ -70,7 +69,7 @@ public class PatternValidation extends Validation{
             }
             int requiredCount = entry.getValue();
             if (countMap.get(requiredType) < requiredCount) {
-                logger.info("password is only found count =>{} which doesn't match to required count =>{} of type => {}",
+                logger.info("password is found count =>{} which doesn't match to required count =>{} of type => {}",
                         countMap.get(requiredType), requiredCount, requiredType);
                 return false;
             }
