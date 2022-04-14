@@ -23,7 +23,7 @@ public class PwValidationServiceImpl implements PwValidationService {
         logger.info("validate password=>{} ", validation);
 
         if (!validation.isValidate(pw)) {
-            logger.info(pw + " is invalid");
+            logger.info("Password is invalid => {}", pw);
             return false;
         }
         return true;
