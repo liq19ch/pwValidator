@@ -15,16 +15,22 @@ import javax.annotation.PostConstruct;
 @ComponentScan("com.innova")
 public class PwValidationServiceImpl implements PwValidationService {
 
-    @Autowired
     private Validator validator;
-    @Autowired
     private EmptyValidation emptyValidation;
-    @Autowired
     private LengthValidation lengthValidation;
-    @Autowired
     private PatternValidation patternValidation;
-    @Autowired
     private SequenceValidation sequenceValidation;
+
+    @Autowired
+    public PwValidationServiceImpl(EmptyValidation emptyValidation, LengthValidation lengthValidation,
+                                   PatternValidation patternValidation,SequenceValidation sequenceValidation, Validator validator){
+        this.emptyValidation = emptyValidation;
+        this.lengthValidation = lengthValidation;
+        this.patternValidation = patternValidation;
+        this.sequenceValidation = sequenceValidation;
+        this.validator = validator;
+    }
+
 
 
     @PostConstruct

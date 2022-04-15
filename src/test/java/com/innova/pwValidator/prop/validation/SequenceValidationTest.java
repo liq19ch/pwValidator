@@ -2,15 +2,13 @@ package com.innova.pwValidator.prop.validation;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = SequenceValidation.class)
-@RunWith(MockitoJUnitRunner.class)
+
 class SequenceValidationTest {
 
     @Autowired
@@ -29,6 +27,8 @@ class SequenceValidationTest {
 
     @Test
     void getErrorMsg() {
+        assertEquals(sequenceValidation.getErrorMsg(), "password is repeated with sequence. ");
+
     }
 
     @Test
