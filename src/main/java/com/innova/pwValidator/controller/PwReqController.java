@@ -23,7 +23,7 @@ public class PwReqController {
     public String validatePassword(@Valid @RequestBody PasswordReq passwordReq) {
         String errorMessage = pwValidationService.valid(passwordReq.getPassword());
         if (errorMessage == null || errorMessage.equals("")) {
-            errorMessage = "success";
+           return  "success";
         }
         return errorMessage;
     }
