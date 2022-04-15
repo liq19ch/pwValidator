@@ -10,12 +10,12 @@ public abstract class Validation {
     final Logger logger = LoggerFactory.getLogger(Validation.class);
 
 
-    public abstract boolean isValid(String pw);
+    public abstract boolean isValid(String str);
 
 
     public abstract String getErrorMsg();
 
-    protected boolean isEmpty(String pw) {
+    protected boolean isEmpty(String str) {
         if (pw == null || pw.equals("")) {
             return true;
         }
