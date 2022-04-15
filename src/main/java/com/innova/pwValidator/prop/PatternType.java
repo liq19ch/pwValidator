@@ -1,18 +1,20 @@
 package com.innova.pwValidator.prop;
 
-public enum Type {
+public enum PatternType {
 
-    LOWERCASE("[a-z]"),
-    NUMBER("[0-9]");
+    LOWERCASE("a-z"),
+    NUMBER("0-9");
 
     private String pattern;
 
-    Type(String pattern) {
+    PatternType(String pattern) {
         this.pattern = pattern;
     }
 
     public String getPattern() {
         return pattern;
     }
+
+
 
 }

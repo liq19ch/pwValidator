@@ -1,6 +1,8 @@
 package com.innova.pwValidator.service;
 
 
+
 public interface PwValidationService {
-    boolean isValid(String pw);
+    String valid(String pw);
+//    PwValidationService setUp(List<Class<? extends Validation>> validationsList);
 }

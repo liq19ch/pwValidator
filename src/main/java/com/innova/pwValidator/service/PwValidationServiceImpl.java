@@ -1,32 +1,45 @@
 package com.innova.pwValidator.service;
 
-import com.innova.pwValidator.prop.Validation;
-import org.slf4j.LoggerFactory;
+import com.innova.pwValidator.prop.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.slf4j.Logger;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import java.util.Arrays;
+import java.util.List;
 
 
-@Scope("prototype")
-@Component
+@Service
+@ComponentScan("com.innova")
 public class PwValidationServiceImpl implements PwValidationService {
 
+    private Validator validator;
+    private EmptyValidation emptyValidation;
+    private LengthValidation lengthValidation;
+    private PatternValidation patternValidation;
+    private SequenceValidation sequenceValidation;
+
     @Autowired
-    private Validation validation;
-
-    private final Logger logger = LoggerFactory.getLogger(PwValidationServiceImpl.class);
-
-    @Override
-    public boolean isValid(String pw) {
-
-        logger.info("validate password=>{} ", validation);
-
-        if (!validation.isValidate(pw)) {
-            logger.info(pw + " is invalid");
-            return false;
-        }
-        return true;
+    public PwValidationServiceImpl(EmptyValidation emptyValidation, LengthValidation lengthValidation,
+                                   PatternValidation patternValidation,SequenceValidation sequenceValidation, Validator validator){
+        this.emptyValidation = emptyValidation;
+        this.lengthValidation = lengthValidation;
+        this.patternValidation = patternValidation;
+        this.sequenceValidation = sequenceValidation;
+        this.validator = validator;
     }
 
+
+
+    @PostConstruct
+    public void postConstruct() {
+        List<Validation> list = Arrays.asList(emptyValidation,lengthValidation,patternValidation,sequenceValidation);
+        validator.addValidation(list);
+    }
+
+    @Override
+    public String valid(String pw) {
+        return validator.validate(pw);
+    }
 }
