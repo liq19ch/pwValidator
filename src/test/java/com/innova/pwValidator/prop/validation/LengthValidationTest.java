@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 class LengthValidationTest {
 
 
-    @Spy
+    @Mock
     private PwValidationSetting setting;
     @Mock
     private LengthValidation lengthValidation;

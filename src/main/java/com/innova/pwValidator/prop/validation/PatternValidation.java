@@ -20,12 +20,20 @@ import static com.innova.pwValidator.prop.Def.MIN;
 @Component
 @ComponentScan("com.innova")
 public class PatternValidation extends Validation {
-    @Autowired
-    private PwValidationSetting pwValidationSetting;
+
 
     private final Logger logger = LoggerFactory.getLogger(PatternValidation.class);
 
     private String errorMsg = "";
+
+    private Map<PatternType, Integer> minCountMap;
+
+    private List<PatternType> typeList;
+
+    public PatternValidation(PwValidationSetting setting) {
+        this.minCountMap = setting.getMinCountMap();
+        this.typeList = setting.getTypes();
+    }
 
     @Override
     public boolean isValid(String pw) {
@@ -34,7 +42,7 @@ public class PatternValidation extends Validation {
             return false;
         }
 
-        return isValidCount(pw, pwValidationSetting.getMinCountMap(), MIN);
+        return isValidCount(pw, minCountMap, MIN);
     }
 
     @Override
@@ -46,7 +54,7 @@ public class PatternValidation extends Validation {
         if (isEmpty(pw)) {
             return false;
         }
-        List<PatternType> types = pwValidationSetting.getTypes();
+        List<PatternType> types = typeList;
         StringBuilder sb = new StringBuilder();
         sb.append("[");
 
@@ -63,7 +71,7 @@ public class PatternValidation extends Validation {
 
     public Map<PatternType, Integer> getCount(String pw) {
         Map<PatternType, Integer> countMap = new HashMap<>();
-        List<PatternType> types = pwValidationSetting.getTypes();
+        List<PatternType> types = typeList;
 
         for (int i = 0; i < pw.length(); i++) {
             String s = String.valueOf(pw.charAt(i));

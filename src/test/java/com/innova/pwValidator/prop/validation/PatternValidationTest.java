@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.innova.pwValidator.prop.Def.MIN;
@@ -30,14 +31,21 @@ import static org.hamcrest.Matchers.hasSize;
 @RunWith(MockitoJUnitRunner.class)
 class PatternValidationTest {
 
-    @Autowired
+    @Mock
     private PatternValidation patternValidation;
     @Mock
-    private PwValidationSetting pwValidationSetting;
+    private PwValidationSetting setting;
 
     @BeforeEach
     void init() {
-
+        setting = new PwValidationSetting();
+        Map<PatternType, Integer> map = new HashMap<>();
+        map.put(LOWERCASE, 1);
+        map.put(NUMBER, 1);
+        setting.setMinCountMap(map);
+        List<PatternType> typeList = Arrays.asList(NUMBER, LOWERCASE);
+        setting.setTypes(typeList);
+        patternValidation = new PatternValidation(setting);
     }
 
     @Test
@@ -124,20 +132,14 @@ class PatternValidationTest {
 
     @Test
     void isValidCount() {
-        Map<PatternType, Integer> map = new HashMap<>();
-        map.put(LOWERCASE, 1);
-        map.put(NUMBER, 1);
-        Mockito.when(pwValidationSetting.getMinCountMap()).thenReturn(map);
-        testMap(map, pwValidationSetting.getMinCountMap(),2);
-        Mockito.verify(pwValidationSetting).getMinCountMap();
 
-        Assertions.assertFalse(patternValidation.isValidCount("11", pwValidationSetting.getMinCountMap(), MIN));
-        Assertions.assertFalse(patternValidation.isValidCount("aa", pwValidationSetting.getMinCountMap(), MIN));
-        Assertions.assertFalse(patternValidation.isValidCount("ADER12", pwValidationSetting.getMinCountMap(), MIN));
-        Assertions.assertFalse(patternValidation.isValidCount("bbbb", pwValidationSetting.getMinCountMap(), MIN));
-        Assertions.assertTrue(patternValidation.isValidCount("a1", pwValidationSetting.getMinCountMap(), MIN));
-        Assertions.assertTrue(patternValidation.isValidCount("a1234", pwValidationSetting.getMinCountMap(), MIN));
-        Assertions.assertTrue(patternValidation.isValidCount("?_v1", pwValidationSetting.getMinCountMap(), MIN));
+        Assertions.assertFalse(patternValidation.isValidCount("11", setting.getMinCountMap(), MIN));
+        Assertions.assertFalse(patternValidation.isValidCount("aa", setting.getMinCountMap(), MIN));
+        Assertions.assertFalse(patternValidation.isValidCount("ADER12", setting.getMinCountMap(), MIN));
+        Assertions.assertFalse(patternValidation.isValidCount("bbbb", setting.getMinCountMap(), MIN));
+        Assertions.assertTrue(patternValidation.isValidCount("a1", setting.getMinCountMap(), MIN));
+        Assertions.assertTrue(patternValidation.isValidCount("a1234", setting.getMinCountMap(), MIN));
+        Assertions.assertTrue(patternValidation.isValidCount("?_v1", setting.getMinCountMap(), MIN));
 
     }
 }
