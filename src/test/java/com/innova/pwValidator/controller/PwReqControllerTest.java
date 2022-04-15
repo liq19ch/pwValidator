@@ -56,22 +56,23 @@ public class PwReqControllerTest {
     void failSequence() throws Exception {
         PasswordReq request = new PasswordReq("abab1231");
         String jsonStr = parseJsonStr(request);
-        mockMvc.perform(
-                post("/pwValidate")
-                        .contentType(MediaType.APPLICATION_JSON).content(jsonStr))
+        mockMvc.perform(MockMvcRequestBuilders.post("/pwValidate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonStr)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("password is repeated with sequence. ")
                 );
-
     }
 
     @Test
     void failEmpty() throws Exception {
         PasswordReq request = new PasswordReq("");
         String jsonStr = parseJsonStr(request);
-        mockMvc.perform(
-                post("/pwValidate")
-                        .contentType(MediaType.APPLICATION_JSON).content(jsonStr))
+        mockMvc.perform(MockMvcRequestBuilders.post("/pwValidate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonStr)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("password is empty.")
                 );
@@ -82,9 +83,10 @@ public class PwReqControllerTest {
     void failNull() throws Exception {
         PasswordReq request = new PasswordReq(null);
         String jsonStr = parseJsonStr(request);
-        mockMvc.perform(
-                post("/pwValidate")
-                        .contentType(MediaType.APPLICATION_JSON).content(jsonStr))
+        mockMvc.perform(MockMvcRequestBuilders.post("/pwValidate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonStr)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("password is empty.")
                 );
@@ -95,12 +97,14 @@ public class PwReqControllerTest {
     void failLength() throws Exception {
         PasswordReq request = new PasswordReq("1234asbhjioe1");
         String jsonStr = parseJsonStr(request);
-        mockMvc.perform(
-                post("/pwValidate")
-                        .contentType(MediaType.APPLICATION_JSON).content(jsonStr))
+        mockMvc.perform(MockMvcRequestBuilders.post("/pwValidate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonStr)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Password length is invalid. ")
                 );
+
 
     }
 

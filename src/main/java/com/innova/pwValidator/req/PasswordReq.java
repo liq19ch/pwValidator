@@ -7,6 +7,10 @@ public class PasswordReq implements Serializable {
 //    @ValidateAll(pattern = PATTERN_PASSWORD)
     private String password;
 
+    public PasswordReq(){
+
+    }
+
     public PasswordReq(String password) {
         this.password = password;
     }
