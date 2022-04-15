@@ -47,3 +47,9 @@ All Validation should extends `Validation` class which can implement `isValid(St
 
 >`getErrorMsg()` will return `input is repeated with sequence.`
 
+
+## Test Cases
+
+Some tests cases are provided to check if the validations can meet the requirement:
+
+https://github.com/liq19ch/pwValidator/blob/master/src/test/validatiojnTestCases
