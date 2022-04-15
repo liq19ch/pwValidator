@@ -30,6 +30,6 @@ class EmptyValidationTest {
 
     @Test
     void getErrorMsg() {
-        assertEquals(emptyValidation.getErrorMsg(),"password is empty.");
+        assertEquals(emptyValidation.getErrorMsg(),"input is empty.");
     }
 }

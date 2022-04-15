@@ -9,9 +9,9 @@ public class EmptyValidation extends Validation {
     private final Logger logger = LoggerFactory.getLogger(EmptyValidation.class);
 
     @Override
-    public boolean isValid(String pw) {
-        if(isEmpty(pw)){
-            logger.info("password is empty");
+    public boolean isValid(String str) {
+        if(isEmpty(str)){
+            logger.info("Input is empty");
             return false;
         }
         return true;
@@ -19,6 +19,6 @@ public class EmptyValidation extends Validation {
 
     @Override
     public String getErrorMsg() {
-        return "password is empty.";
+        return "input is empty.";
     }
 }

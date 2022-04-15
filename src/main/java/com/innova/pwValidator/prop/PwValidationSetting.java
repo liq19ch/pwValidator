@@ -17,15 +17,15 @@ import java.util.Map;
 @Getter
 @Component
 @PropertySource("classpath:application.properties")
-public class PwValidationSetting {
+public class PwValidationSetting implements Setting {
 
 
-    @Value("${rule.length.min}")
+    @Value("${pw.rule.length.min}")
     private int minLength;
-    @Value("${rule.length.max}")
+    @Value("${pw.rule.length.max}")
     private int maxLength;
-    @Value("#{'${rule.type}'.split(',')}")
+    @Value("#{'${pw.rule.type}'.split(',')}")
     private List<PatternType> types;
-    @Value("#{${rule.type.min.count}}")
+    @Value("#{${pw.rule.type.min.count}}")
     private Map<PatternType, Integer> minCountMap;
 }

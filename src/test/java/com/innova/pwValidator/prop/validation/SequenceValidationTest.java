@@ -27,7 +27,7 @@ class SequenceValidationTest {
 
     @Test
     void getErrorMsg() {
-        assertEquals(sequenceValidation.getErrorMsg(), "password is repeated with sequence. ");
+        assertEquals(sequenceValidation.getErrorMsg(), "input is repeated with sequence. ");
 
     }
 
