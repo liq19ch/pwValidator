@@ -1,14 +1,13 @@
 package com.innova.pwValidator.service;
 
-import com.innova.pwValidator.prop.validation.EmptyValidation;
-import com.innova.pwValidator.prop.validation.LengthValidation;
-import com.innova.pwValidator.prop.validation.PatternValidation;
-import com.innova.pwValidator.prop.validation.SequenceValidation;
+import com.innova.pwValidator.prop.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
+import java.util.List;
 
 
 @Service
@@ -35,10 +34,8 @@ public class PwValidationServiceImpl implements PwValidationService {
 
     @PostConstruct
     public void postConstruct() {
-        validator.addValidation(emptyValidation);
-        validator.addValidation(lengthValidation);
-        validator.addValidation(patternValidation);
-        validator.addValidation(sequenceValidation);
+        List<Validation> list = Arrays.asList(emptyValidation,lengthValidation,patternValidation,sequenceValidation);
+        validator.addValidation(list);
     }
 
     @Override

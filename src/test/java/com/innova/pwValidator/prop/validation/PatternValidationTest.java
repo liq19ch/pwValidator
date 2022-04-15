@@ -39,8 +39,7 @@ class PatternValidationTest {
         map.put(LOWERCASE, 1);
         map.put(NUMBER, 1);
         setting.setMinCountMap(map);
-        List<PatternType> typeList = Arrays.asList(NUMBER, LOWERCASE);
-        setting.setTypes(typeList);
+        setting.setTypes(Arrays.asList(NUMBER, LOWERCASE));
         patternValidation = new PatternValidation(setting);
     }
 
@@ -94,8 +93,6 @@ class PatternValidationTest {
         testMap(expected, testCase, 2);
         assertThat(testCase, IsMapContaining.hasEntry(LOWERCASE, 4));
         assertThat(testCase, IsMapContaining.hasEntry(NUMBER, 3));
-        assertThat(testCase, IsMapContaining.hasKey(LOWERCASE));
-        assertThat(testCase, IsMapContaining.hasKey(NUMBER));
 
         expected = new HashMap<>();
         testCase = patternValidation.getCount("ZZZZZ");
@@ -108,22 +105,18 @@ class PatternValidationTest {
         testMap(expected, testCase, 2);
         assertThat(testCase, IsMapContaining.hasEntry(LOWERCASE, 6));
         assertThat(testCase, IsMapContaining.hasEntry(NUMBER, 4));
-        assertThat(testCase, IsMapContaining.hasKey(LOWERCASE));
-        assertThat(testCase, IsMapContaining.hasKey(NUMBER));
 
         expected = new HashMap<>();
         expected.put(NUMBER, 4);
         testCase = patternValidation.getCount("1111");
         testMap(expected, testCase, 1);
         assertThat(testCase, IsMapContaining.hasEntry(NUMBER, 4));
-        assertThat(testCase, IsMapContaining.hasKey(NUMBER));
 
         expected = new HashMap<>();
         expected.put(LOWERCASE, 2);
         testCase = patternValidation.getCount("aa");
         testMap(expected, testCase, 1);
         assertThat(testCase, IsMapContaining.hasEntry(LOWERCASE, 2));
-        assertThat(testCase, IsMapContaining.hasKey(LOWERCASE));
 
     }
 

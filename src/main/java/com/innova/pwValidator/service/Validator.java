@@ -11,8 +11,8 @@ public class Validator {
 
     private List<Validation> validationList = new ArrayList<>();
 
-    public void addValidation(Validation v) {
-        this.validationList.add(v);
+    public void addValidation(List<Validation> v) {
+        this.validationList = v;
     }
 
     public String validate(String pw) {

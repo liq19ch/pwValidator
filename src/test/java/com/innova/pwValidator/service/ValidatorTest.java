@@ -36,17 +36,15 @@ class ValidatorTest {
         map.put(LOWERCASE, 1);
         map.put(NUMBER, 1);
         setting.setMinCountMap(map);
-        List<PatternType> typeList = Arrays.asList(NUMBER, LOWERCASE);
-        setting.setTypes(typeList);
+        setting.setTypes( Arrays.asList(NUMBER, LOWERCASE));
     }
 
     @Test
     @Order(1)
     void addValidation() {
-        validator.addValidation(new EmptyValidation());
-        validator.addValidation(new LengthValidation(setting));
-        validator.addValidation(new PatternValidation(setting));
-        validator.addValidation(new SequenceValidation());
+        List<Validation> list = Arrays.asList(new EmptyValidation(),new LengthValidation(setting),
+                new PatternValidation(setting),new SequenceValidation());
+        validator.addValidation(list);
         assertThat(validator.getValidationList(), hasSize(4));
         assertThat(new ArrayList<>(), IsEmptyCollection.empty());
     }

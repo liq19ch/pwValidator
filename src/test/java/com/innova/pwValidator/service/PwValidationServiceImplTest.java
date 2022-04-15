@@ -17,11 +17,6 @@ class PwValidationServiceImplTest {
 
 
     @Test
-    @Disabled
-    void postConstruct() {
-    }
-
-    @Test
     void valid() {
         assertEquals(pwValidationService.valid(""), "password is empty.");
         assertEquals(pwValidationService.valid(null), "password is empty.");
