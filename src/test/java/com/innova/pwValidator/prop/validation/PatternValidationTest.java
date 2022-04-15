@@ -6,7 +6,9 @@ import org.hamcrest.collection.IsMapContaining;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
 @SpringBootTest(classes = PatternValidation.class)
+@RunWith(MockitoJUnitRunner.class)
 class PatternValidationTest {
 
     @Autowired
@@ -70,6 +73,7 @@ class PatternValidationTest {
         Assertions.assertTrue(patternValidation.isValidType("abcd1234"));
         Assertions.assertTrue(patternValidation.isValidType("12345"));
         Assertions.assertTrue(patternValidation.isValidType("abcde"));
+        Assertions.assertTrue(patternValidation.isValidType("a123bcd"));
     }
 
     private void testMap(Map<PatternType, Integer> expected, Map<PatternType, Integer> testCase, int size) {

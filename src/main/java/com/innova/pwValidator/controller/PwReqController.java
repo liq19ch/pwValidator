@@ -14,15 +14,15 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-public class ReqController {
+public class PwReqController {
 
     @Autowired
     private PwValidationService pwValidationService;
 
     @PostMapping("/pwValidate")
-    public String register(@Valid @RequestBody PasswordReq passwordReq) {
+    public String validatePassword(@Valid @RequestBody PasswordReq passwordReq) {
         String errorMessage = pwValidationService.valid(passwordReq.getPassword());
-        if (errorMessage == null || errorMessage == "") {
+        if (errorMessage == null || errorMessage.equals("")) {
             errorMessage = "success";
         }
         return errorMessage;

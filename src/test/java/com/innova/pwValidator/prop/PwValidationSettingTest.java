@@ -23,6 +23,5 @@ class PwValidationSettingTest {
         Assertions.assertEquals(12, pwValidationSetting.getMaxLength());
         Assertions.assertEquals(new ArrayList<>(Arrays.asList(PatternType.LOWERCASE, PatternType.NUMBER)), pwValidationSetting.getTypes());
 
-
     }
 }

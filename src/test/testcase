@@ -48,6 +48,7 @@ PatternValidation   isValid()                                         abcde     
                                                                       ADO              false
                                                                       /?_              false
                                                                       哈囉             false
+                                                                      a123bcd          true
 
                     getCount()                                        ab12Acd1         {LOWERCASE: 4, NUMBER: 3}
                                                                       ZZZZZ            {}

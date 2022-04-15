@@ -34,7 +34,7 @@ public class PatternValidation extends Validation {
             return false;
         }
 
-        return !isValidCount(pw, pwValidationSetting.getMinCountMap(), MIN);
+        return isValidCount(pw, pwValidationSetting.getMinCountMap(), MIN);
     }
 
     @Override
