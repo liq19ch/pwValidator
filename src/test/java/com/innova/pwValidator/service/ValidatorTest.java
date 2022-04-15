@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import sun.security.util.Length;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -26,6 +27,7 @@ class ValidatorTest {
 
     @Autowired
     private Validator validator;
+
 
     private List<Validation> validationList = new ArrayList<>();
 
@@ -44,16 +46,12 @@ class ValidatorTest {
 
     @BeforeEach
     void init() {
-        validationList.add(new EmptyValidation());
-        validationList.add(new LengthValidation());
-        validationList.add(new PatternValidation());
-        validationList.add(new SequenceValidation());
     }
 
     @Test
     void addValidation() {
         validator.addValidation(new EmptyValidation());
-        validator.addValidation(new LengthValidation());
+//        validator.addValidation(new LengthValidation());
         validator.addValidation(new PatternValidation());
         validator.addValidation(new SequenceValidation());
 
@@ -63,5 +61,15 @@ class ValidatorTest {
 
     @Test
     void validate() {
+        List<String> list = new ArrayList<>(Arrays.asList("", null, "abc", "123123abc123abc", "AZ123A?", "c__189", "cccc", "11234abc"));
+        validator.addValidation(new EmptyValidation());
+//        validator.addValidation(new LengthValidation());
+        validator.addValidation(new PatternValidation());
+        validator.addValidation(new SequenceValidation());
+
+        for (String pw : list) {
+            assertFalse(validator.validate(pw).isEmpty());
+        }
+
     }
 }

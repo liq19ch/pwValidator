@@ -12,21 +12,25 @@ import org.springframework.stereotype.Component;
 @ComponentScan("com.innova")
 public class LengthValidation extends Validation {
 
-    @Autowired
-    private PwValidationSetting pwValidationSetting;
-
     private final Logger logger = LoggerFactory.getLogger(LengthValidation.class);
 
     private String errorMsg = "";
 
-    @Override
+    private int min;
+    private int max;
 
+
+    public LengthValidation(PwValidationSetting setting) {
+        this.min = setting.getMinLength();
+        this.max = setting.getMaxLength();
+    }
+
+    @Override
     public boolean isValid(String pw) {
         if (isEmpty(pw)) {
             return false;
         }
-        int min = pwValidationSetting.getMinLength();
-        int max = pwValidationSetting.getMaxLength();
+
         if (min > max) {
             logger.debug("MinLength =>{} is bigger than MaxLength =>{}", min, max);
             errorMsg = "Properties setting is invalid in length. ";

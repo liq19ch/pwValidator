@@ -17,13 +17,22 @@ public class PwValidationServiceImpl implements PwValidationService {
 
     @Autowired
     private Validator validator;
+    @Autowired
+    private EmptyValidation emptyValidation;
+    @Autowired
+    private LengthValidation lengthValidation;
+    @Autowired
+    private PatternValidation patternValidation;
+    @Autowired
+    private SequenceValidation sequenceValidation;
+
 
     @PostConstruct
     public void postConstruct() {
-        validator.addValidation(new EmptyValidation());
-        validator.addValidation(new LengthValidation());
-        validator.addValidation(new PatternValidation());
-        validator.addValidation(new SequenceValidation());
+        validator.addValidation(emptyValidation);
+        validator.addValidation(lengthValidation);
+        validator.addValidation(patternValidation);
+        validator.addValidation(sequenceValidation);
     }
 
     @Override
