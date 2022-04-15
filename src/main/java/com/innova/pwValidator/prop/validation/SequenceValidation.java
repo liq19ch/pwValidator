@@ -12,12 +12,12 @@ public class SequenceValidation extends Validation {
     private final Logger logger = LoggerFactory.getLogger(SequenceValidation.class);
 
     @Override
-    public boolean isValid(String pw) {
-        if (isEmpty(pw)) {
+    public boolean isValid(String str) {
+        if (isEmpty(str)) {
             return false;
         }
-        if (isRepeat(pw)) {
-            logger.info("password is repeated");
+        if (isRepeat(str)) {
+            logger.info("input is repeated");
             return false;
         }
         return true;
@@ -25,15 +25,15 @@ public class SequenceValidation extends Validation {
 
     @Override
     public String getErrorMsg() {
-        return "password is repeated with sequence. ";
+        return "input is repeated with sequence. ";
     }
 
-    public boolean isRepeat(String pw) {
+    public boolean isRepeat(String str) {
         LinkedList<Character> linkedList = new LinkedList<>();
         int j = -1;
         int end = -1;
-        for (int i = 0; i < pw.length(); i++) {
-            char c = pw.charAt(i);
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
             if (j == -1 && end == -1) {
                 if (linkedList.contains(c)) {
                     j = linkedList.indexOf(c);

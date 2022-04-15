@@ -26,8 +26,8 @@ public class LengthValidation extends Validation {
     }
 
     @Override
-    public boolean isValid(String pw) {
-        if (isEmpty(pw)) {
+    public boolean isValid(String str) {
+        if (isEmpty(str)) {
             return false;
         }
 
@@ -36,8 +36,8 @@ public class LengthValidation extends Validation {
             errorMsg = "Properties setting is invalid in length. ";
             return false;
         }
-        if (pw.length() < min || pw.length() > max) {
-            errorMsg = "Password length is invalid. ";
+        if (str.length() < min || str.length() > max) {
+            errorMsg = "input length is invalid. ";
             return false;
         }
         return true;

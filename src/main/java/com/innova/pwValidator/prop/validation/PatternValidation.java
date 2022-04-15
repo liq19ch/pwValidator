@@ -36,13 +36,13 @@ public class PatternValidation extends Validation {
     }
 
     @Override
-    public boolean isValid(String pw) {
-        if (!isValidType(pw)) {
-            errorMsg = "password doesn't match to type. ";
+    public boolean isValid(String str) {
+        if (!isValidType(str)) {
+            errorMsg = "input doesn't match to type. ";
             return false;
         }
 
-        return isValidCount(pw, minCountMap, MIN);
+        return isValidCount(str, minCountMap, MIN);
     }
 
     @Override
@@ -50,8 +50,8 @@ public class PatternValidation extends Validation {
         return errorMsg;
     }
 
-    public boolean isValidType(String pw) {
-        if (isEmpty(pw)) {
+    public boolean isValidType(String str) {
+        if (isEmpty(str)) {
             return false;
         }
         List<PatternType> types = typeList;
@@ -62,19 +62,19 @@ public class PatternValidation extends Validation {
             sb.append(type.getPattern());
         }
         sb.append("]+");
-        if (!pw.matches(sb.toString())) {
-            logger.info("password doesn't match to type");
+        if (!str.matches(sb.toString())) {
+            logger.info("input doesn't match to type");
             return false;
         }
         return true;
     }
 
-    public Map<PatternType, Integer> getCount(String pw) {
+    public Map<PatternType, Integer> getCount(String str) {
         Map<PatternType, Integer> countMap = new HashMap<>();
         List<PatternType> types = typeList;
 
-        for (int i = 0; i < pw.length(); i++) {
-            String s = String.valueOf(pw.charAt(i));
+        for (int i = 0; i < str.length(); i++) {
+            String s = String.valueOf(str.charAt(i));
             for (PatternType type : types) {
                 String pattern = "[" + type.getPattern() + "]+";
                 if (!s.matches(pattern)) {
@@ -88,32 +88,32 @@ public class PatternValidation extends Validation {
     }
 
 
-    public boolean isValidCount(String pw, Map<PatternType, Integer> requiredMap, Def type) {
-        if (isEmpty(pw)) {
+    public boolean isValidCount(String str, Map<PatternType, Integer> requiredMap, Def type) {
+        if (isEmpty(str)) {
             return false;
         }
-        Map<PatternType, Integer> countMap = getCount(pw);
+        Map<PatternType, Integer> countMap = getCount(str);
 
         for (Map.Entry<PatternType, Integer> entry : requiredMap.entrySet()) {
             PatternType requiredType = entry.getKey();
             if (!countMap.containsKey(requiredType)) {
-                logger.info("password doesn't contain type =>{}", requiredType);
-                errorMsg = "password doesn't contain specific type. ";
+                logger.info("input doesn't contain type =>{}", requiredType);
+                errorMsg = "input doesn't contain specific type. ";
                 return false;
             }
             int requiredCount = entry.getValue();
             if (type.equals(MIN)) {
                 if (countMap.get(requiredType) < requiredCount) {
-                    logger.info("password is only found count =>{} which doesn't match to min required count =>{} of type => {}",
+                    logger.info("input is only found count =>{} which doesn't match to min required count =>{} of type => {}",
                             countMap.get(requiredType), requiredCount, requiredType);
-                    errorMsg = "password doesn't meet the count of types. ";
+                    errorMsg = "input doesn't meet the count of types. ";
                     return false;
                 }
             } else if (type.equals(MAX)) {
                 if (countMap.get(requiredType) > requiredCount) {
-                    logger.info("password is found count =>{} which doesn't match to max required count =>{} of type => {}",
+                    logger.info("input is found count =>{} which doesn't match to max required count =>{} of type => {}",
                             countMap.get(requiredType), requiredCount, requiredType);
-                    errorMsg = "password is over the the count of types. ";
+                    errorMsg = "input is over the the count of types. ";
                     return false;
                 }
             }
