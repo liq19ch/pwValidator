@@ -23,4 +23,9 @@ public class Validator {
         }
         return null;
     }
+
+    public List<Validation> getValidationList() {
+        return validationList;
+    }
+
 }

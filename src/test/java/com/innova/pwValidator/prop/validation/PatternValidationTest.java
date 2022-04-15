@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +32,12 @@ class PatternValidationTest {
 
     @Autowired
     private PatternValidation patternValidation;
-    @Spy
+    @Mock
     private PwValidationSetting pwValidationSetting;
 
     @BeforeEach
     void init() {
-        this.pwValidationSetting = new PwValidationSetting();
-        Map<PatternType, Integer> map = new HashMap<>();
-        map.put(LOWERCASE, 1);
-        map.put(NUMBER, 1);
-        pwValidationSetting.setMinCountMap(map);
+
     }
 
     @Test
@@ -126,6 +124,13 @@ class PatternValidationTest {
 
     @Test
     void isValidCount() {
+        Map<PatternType, Integer> map = new HashMap<>();
+        map.put(LOWERCASE, 1);
+        map.put(NUMBER, 1);
+        Mockito.when(pwValidationSetting.getMinCountMap()).thenReturn(map);
+        testMap(map, pwValidationSetting.getMinCountMap(),2);
+        Mockito.verify(pwValidationSetting).getMinCountMap();
+
         Assertions.assertFalse(patternValidation.isValidCount("11", pwValidationSetting.getMinCountMap(), MIN));
         Assertions.assertFalse(patternValidation.isValidCount("aa", pwValidationSetting.getMinCountMap(), MIN));
         Assertions.assertFalse(patternValidation.isValidCount("ADER12", pwValidationSetting.getMinCountMap(), MIN));

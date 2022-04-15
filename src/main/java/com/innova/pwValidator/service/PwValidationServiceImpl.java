@@ -5,12 +5,14 @@ import com.innova.pwValidator.prop.validation.LengthValidation;
 import com.innova.pwValidator.prop.validation.PatternValidation;
 import com.innova.pwValidator.prop.validation.SequenceValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
 
 @Service
+@ComponentScan("com.innova")
 public class PwValidationServiceImpl implements PwValidationService {
 
     @Autowired
