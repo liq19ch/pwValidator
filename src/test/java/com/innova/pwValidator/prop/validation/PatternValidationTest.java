@@ -23,6 +23,7 @@ import static com.innova.pwValidator.prop.PatternType.NUMBER;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = PatternValidation.class)
 class PatternValidationTest {
@@ -61,8 +62,8 @@ class PatternValidationTest {
     }
 
     @Test
-    @Disabled
     void getErrorMsg() {
+        assertEquals(patternValidation.getErrorMsg(),"");
     }
 
 
