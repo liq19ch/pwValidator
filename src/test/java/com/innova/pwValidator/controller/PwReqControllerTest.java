@@ -38,72 +38,47 @@ public class PwReqControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
-    void success() throws Exception {
-        PasswordReq request = new PasswordReq("12cd32");
-        String jsonStr = parseJsonStr(request);
+    private void flow(PasswordReq req, String msg) throws Exception {
+        String jsonStr = parseJsonStr(req);
         mockMvc.perform(MockMvcRequestBuilders.post("/pwValidate")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonStr)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("success")
+                .andExpect(content().string(msg)
                 );
 
+    }
+
+    @Test
+    void success() throws Exception {
+        PasswordReq req = new PasswordReq("12cd32");
+        flow(req, "success");
     }
 
     @Test
     void failSequence() throws Exception {
-        PasswordReq request = new PasswordReq("abab1231");
-        String jsonStr = parseJsonStr(request);
-        mockMvc.perform(MockMvcRequestBuilders.post("/pwValidate")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonStr)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string("password is repeated with sequence. ")
-                );
+        PasswordReq req = new PasswordReq("abab1231");
+        flow(req, "input is repeated with sequence. ");
     }
 
     @Test
     void failEmpty() throws Exception {
-        PasswordReq request = new PasswordReq("");
-        String jsonStr = parseJsonStr(request);
-        mockMvc.perform(MockMvcRequestBuilders.post("/pwValidate")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonStr)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string("password is empty.")
-                );
-
+        PasswordReq req = new PasswordReq("");
+        flow(req, "input is empty.");
     }
 
     @Test
     void failNull() throws Exception {
-        PasswordReq request = new PasswordReq(null);
-        String jsonStr = parseJsonStr(request);
-        mockMvc.perform(MockMvcRequestBuilders.post("/pwValidate")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonStr)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string("password is empty.")
-                );
+        PasswordReq req = new PasswordReq(null);
+        flow(req, "input is empty.");
 
     }
 
     @Test
     void failLength() throws Exception {
-        PasswordReq request = new PasswordReq("1234asbhjioe1");
-        String jsonStr = parseJsonStr(request);
-        mockMvc.perform(MockMvcRequestBuilders.post("/pwValidate")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonStr)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Password length is invalid. ")
-                );
+        PasswordReq req = new PasswordReq("1234asbhjioe1");
+        flow(req, "input length is invalid. ");
 
 
     }
