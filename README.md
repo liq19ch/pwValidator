@@ -1,5 +1,8 @@
 # pwValidator
 
+## Api End Point
+/validator/pwValidate
+
 
 ## Properties 
 pw.rule.length.min=5
@@ -46,6 +49,9 @@ All Validation should extends `Validation` class which can implement `isValid(St
 * SequenceValidation validates if the input has repeated continuously,=.
 
 >`getErrorMsg()` will return `input is repeated with sequence.`
+
+
+Validations can be added in the list of `Validator` class. Use 'Validator` to validate input.
 
 
 ## Test Cases
