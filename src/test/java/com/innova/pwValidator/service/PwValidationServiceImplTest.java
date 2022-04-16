@@ -18,14 +18,14 @@ class PwValidationServiceImplTest {
 
     @Test
     void valid() {
-        assertEquals(pwValidationService.valid(""), "password is empty.");
-        assertEquals(pwValidationService.valid(null), "password is empty.");
-        assertEquals(pwValidationService.valid("abc"), "Password length is invalid. ");
-        assertEquals(pwValidationService.valid("123123abc123abc"), "Password length is invalid. ");
-        assertEquals(pwValidationService.valid("AZ123A?"),  "password doesn't match to type. ");
-        assertEquals(pwValidationService.valid("c__189?"),  "password doesn't match to type. ");
-        assertEquals(pwValidationService.valid("ccccc"),"password doesn't contain specific type. ");
-        assertEquals(pwValidationService.valid("11234abc"),"password is repeated with sequence. ");
+        assertEquals(pwValidationService.valid(""), "input is empty.");
+        assertEquals(pwValidationService.valid(null), "input is empty.");
+        assertEquals(pwValidationService.valid("abc"), "input length is invalid. ");
+        assertEquals(pwValidationService.valid("123123abc123abc"), "input length is invalid. ");
+        assertEquals(pwValidationService.valid("AZ123A?"),  "input doesn't match to type. ");
+        assertEquals(pwValidationService.valid("c__189?"),  "input doesn't match to type. ");
+        assertEquals(pwValidationService.valid("ccccc"),"input doesn't contain specific type. ");
+        assertEquals(pwValidationService.valid("11234abc"),"input is repeated with sequence. ");
 
     }
 }
