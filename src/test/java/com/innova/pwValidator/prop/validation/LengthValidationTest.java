@@ -1,15 +1,12 @@
 package com.innova.pwValidator.prop.validation;
 
-import com.innova.pwValidator.prop.PwValidationSetting;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = LengthValidation.class)
 class LengthValidationTest {

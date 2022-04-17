@@ -1,7 +1,6 @@
 package com.innova.pwValidator.service;
 
 import com.innova.pwValidator.prop.PatternType;
-import com.innova.pwValidator.prop.PwValidationSetting;
 import com.innova.pwValidator.prop.validation.*;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.jupiter.api.*;

@@ -1,11 +1,9 @@
 package com.innova.pwValidator.prop.validation;
 
 import com.innova.pwValidator.prop.PatternType;
-import com.innova.pwValidator.prop.PwValidationSetting;
 import org.hamcrest.collection.IsMapContaining;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -14,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.innova.pwValidator.prop.Def.MIN;
