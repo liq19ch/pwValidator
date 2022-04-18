@@ -52,7 +52,8 @@ e.g.
 
 Request:
 
-```{
+```
+{
   "password":"abcde2abcde2"
 }
 ```
