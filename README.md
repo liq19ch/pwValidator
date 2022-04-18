@@ -16,7 +16,7 @@ pw.type.min.count={NUMBER: 1, LOWERCASE: 1}
 
 ## Password Validations
 
-All Validation should extends `Validation` class which can implement `isValid(String str)` and  `getErrorMessage()` and `getSuccessMessage()` depends on requirements.
+All Validation should implements `Validation` class which can implement `isValid(String str)` and  `getErrorMessage()` and `getSuccessMessage()` depends on requirements.
 
 
 * LengthValidation validates if the length of the input meets the min & max requirements.
