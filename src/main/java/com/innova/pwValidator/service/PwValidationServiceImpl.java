@@ -1,5 +1,6 @@
 package com.innova.pwValidator.service;
 
+import com.innova.pwValidator.response.PasswordResponse;
 import com.innova.pwValidator.prop.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,32 +15,35 @@ import java.util.List;
 @ComponentScan("com.innova")
 public class PwValidationServiceImpl implements PwValidationService {
 
-    private Validator validator;
-    private EmptyValidation emptyValidation;
+    @Autowired
     private LengthValidation lengthValidation;
+    @Autowired
     private PatternValidation patternValidation;
+    @Autowired
     private SequenceValidation sequenceValidation;
 
-    @Autowired
-    public PwValidationServiceImpl(EmptyValidation emptyValidation, LengthValidation lengthValidation,
-                                   PatternValidation patternValidation,SequenceValidation sequenceValidation, Validator validator){
-        this.emptyValidation = emptyValidation;
-        this.lengthValidation = lengthValidation;
-        this.patternValidation = patternValidation;
-        this.sequenceValidation = sequenceValidation;
-        this.validator = validator;
-    }
-
-
+    private List<Validation> validationList;
 
     @PostConstruct
-    public void postConstruct() {
-        List<Validation> list = Arrays.asList(emptyValidation,lengthValidation,patternValidation,sequenceValidation);
-        validator.addValidation(list);
+    public void init() {
+        validationList = Arrays.asList(lengthValidation, patternValidation, sequenceValidation);
     }
 
+
     @Override
-    public String valid(String pw) {
-        return validator.validate(pw);
+    public PasswordResponse valid(String pw) {
+        PasswordResponse passwordRes = new PasswordResponse();
+        if (pw == null || pw.isEmpty()) {
+            passwordRes.getMessage().add("input is empty.");
+            return passwordRes;
+        }
+        for (Validation validation : validationList) {
+            if (!validation.isValid(pw)) {
+                passwordRes.getMessage().add(validation.getErrorMessage());
+            } else {
+                passwordRes.getMessage().add(validation.getSuccessMessage());
+            }
+        }
+        return passwordRes;
     }
 }

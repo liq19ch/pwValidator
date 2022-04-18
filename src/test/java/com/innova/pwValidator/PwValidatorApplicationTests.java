@@ -1,6 +1,6 @@
 package com.innova.pwValidator;
 
-import com.innova.pwValidator.controller.PwReqController;
+import com.innova.pwValidator.controller.PasswordController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +12,7 @@ class PwValidatorApplicationTests {
 
 
 	@Autowired
-	private PwReqController controller;
+	private PasswordController controller;
 
 	@Test
 	public void contextLoads() throws Exception {

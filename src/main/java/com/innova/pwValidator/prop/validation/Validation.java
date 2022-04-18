@@ -5,26 +5,17 @@ import org.slf4j.LoggerFactory;
 
 import org.slf4j.Logger;
 
-public abstract class Validation {
+public interface Validation {
 
     final Logger logger = LoggerFactory.getLogger(Validation.class);
 
 
-    public abstract boolean isValid(String str);
+    public boolean isValid(String str);
 
 
-    public abstract String getErrorMsg();
+    public String getErrorMessage();
 
-    protected boolean isEmpty(String str) {
-        if (str == null || str.equals("")) {
-            return true;
-        }
-        return false;
-    }
-
-//    public boolean isValidate(String pw) {
-//        return isValidLength(pw) && isValidSequence(pw) && isValidType(pw) && isValidCount(pw);
-//    }
+    public String getSuccessMessage();
 }
 
 

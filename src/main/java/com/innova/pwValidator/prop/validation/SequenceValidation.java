@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 import java.util.LinkedList;
 
 @Component
-public class SequenceValidation extends Validation {
+public class SequenceValidation implements Validation {
 
     private final Logger logger = LoggerFactory.getLogger(SequenceValidation.class);
 
     @Override
     public boolean isValid(String str) {
-        if (isEmpty(str)) {
+        if (str == null || str.equals("")) {
             return false;
         }
         if (isRepeat(str)) {
@@ -24,8 +24,12 @@ public class SequenceValidation extends Validation {
     }
 
     @Override
-    public String getErrorMsg() {
-        return "input is repeated with sequence. ";
+    public String getErrorMessage() {
+        return "input is repeated with sequence.";
+    }
+    @Override
+    public String getSuccessMessage() {
+        return "SequenceValidation is passed.";
     }
 
     public boolean isRepeat(String str) {

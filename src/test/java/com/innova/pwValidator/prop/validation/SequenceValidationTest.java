@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = SequenceValidation.class)
-
 class SequenceValidationTest {
 
     @Autowired
@@ -23,11 +22,29 @@ class SequenceValidationTest {
         Assertions.assertFalse(sequenceValidation.isValid("12323234"));
         Assertions.assertTrue(sequenceValidation.isValid("123242526"));
         Assertions.assertTrue(sequenceValidation.isValid("123121"));
+
+
+        Assertions.assertTrue(sequenceValidation.isValid("abc123ab"));
+        Assertions.assertFalse(sequenceValidation.isValid("abba11"));
+        Assertions.assertTrue(sequenceValidation.isValid("abcd1abcd"));
+        Assertions.assertFalse(sequenceValidation.isValid("1789caac1798"));
+        Assertions.assertTrue(sequenceValidation.isValid("cg161cg6"));
+        Assertions.assertTrue(sequenceValidation.isValid("ti8901ti890"));
+        Assertions.assertTrue(sequenceValidation.isValid("2134abc2134"));
+        Assertions.assertTrue(sequenceValidation.isValid("cacbcac"));
+        Assertions.assertTrue(sequenceValidation.isValid("geoi1ioeg"));
+        Assertions.assertTrue(sequenceValidation.isValid("cd1465c465"));
     }
 
     @Test
-    void getErrorMsg() {
-        assertEquals(sequenceValidation.getErrorMsg(), "input is repeated with sequence. ");
+    void getErrorMessage() {
+        assertEquals(sequenceValidation.getErrorMessage(), "input is repeated with sequence.");
+
+    }
+
+    @Test
+    void getSuccessMessage() {
+        assertEquals(sequenceValidation.getSuccessMessage(), "SequenceValidation is passed.");
 
     }
 

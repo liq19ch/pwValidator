@@ -1,8 +1,8 @@
 package com.innova.pwValidator.service;
 
 
+import com.innova.pwValidator.response.PasswordResponse;
 
 public interface PwValidationService {
-    String valid(String pw);
-//    PwValidationService setUp(List<Class<? extends Validation>> validationsList);
+    PasswordResponse valid(String pw);
 }

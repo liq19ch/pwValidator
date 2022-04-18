@@ -1,17 +1,16 @@
-package com.innova.pwValidator.req;
+package com.innova.pwValidator.request;
 
 import java.io.Serializable;
 
-public class PasswordReq implements Serializable {
+public class PasswordRequest implements Serializable {
 
-//    @ValidateAll(pattern = PATTERN_PASSWORD)
     private String password;
 
-    public PasswordReq(){
+    public PasswordRequest(){
 
     }
 
-    public PasswordReq(String password) {
+    public PasswordRequest(String password) {
         this.password = password;
     }
 

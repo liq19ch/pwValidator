@@ -1,32 +1,25 @@
 package com.innova.pwValidator.prop.validation;
 
-import com.innova.pwValidator.prop.PwValidationSetting;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.lang.annotation.Target;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = LengthValidation.class)
+@ExtendWith(MockitoExtension.class)
 class LengthValidationTest {
 
 
-    @Mock
-    private PwValidationSetting setting;
-    @Mock
+
+    @Autowired
     private LengthValidation lengthValidation;
 
-    @BeforeEach
-    void init(){
-        setting = new PwValidationSetting();
-        setting.setMaxLength(12);
-        setting.setMinLength(5);
-        lengthValidation = new LengthValidation(setting);
-    }
 
 
     @Test
@@ -41,7 +34,12 @@ class LengthValidationTest {
     }
 
     @Test
-    void getErrorMsg() {
-        assertEquals(lengthValidation.getErrorMsg(),"");
+    void getErrorMessage() {
+        assertEquals(lengthValidation.getErrorMessage(),"");
+    }
+
+    @Test
+    void getSuccessMessage(){
+        assertEquals(lengthValidation.getSuccessMessage(),"LengthValidation is passed.");
     }
 }

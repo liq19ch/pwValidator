@@ -1,12 +1,11 @@
 package com.innova.pwValidator.prop.validation;
 
-import com.innova.pwValidator.prop.PatternType;
-import com.innova.pwValidator.prop.PwValidationSetting;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.innova.pwValidator.prop.Def;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -14,53 +13,65 @@ import java.util.List;
 import java.util.Map;
 
 
-import static com.innova.pwValidator.prop.Def.MAX;
-import static com.innova.pwValidator.prop.Def.MIN;
-
 @Component
 @ComponentScan("com.innova")
-public class PatternValidation extends Validation {
+@PropertySource("classpath:application.properties")
+public class PatternValidation implements Validation {
 
 
     private final Logger logger = LoggerFactory.getLogger(PatternValidation.class);
 
     private String errorMsg = "";
 
-    private Map<PatternType, Integer> minCountMap;
 
-    private List<PatternType> typeList;
+    @Value("#{${pw.type.min.count}}")
+    private Map<String, Integer> minCountMap;
 
-    public PatternValidation(PwValidationSetting setting) {
-        this.minCountMap = setting.getMinCountMap();
-        this.typeList = setting.getTypes();
-    }
+    @Value("#{'${pw.type}'.split(',')}")
+    private List<String> typeList;
+
 
     @Override
     public boolean isValid(String str) {
+        if (str == null || str.equals("")) {
+            return false;
+        }
         if (!isValidType(str)) {
-            errorMsg = "input doesn't match to type. ";
+            errorMsg = "input doesn't match to type.";
             return false;
         }
 
-        return isValidCount(str, minCountMap, MIN);
+        return isValidCount(str);
     }
 
     @Override
-    public String getErrorMsg() {
+    public String getErrorMessage() {
         return errorMsg;
+    }
+    @Override
+    public String getSuccessMessage() {
+        return "PatternValidation is passed.";
+    }
+
+    private String getType(String str) {
+        switch (str) {
+            case "LOWERCASE":
+                return "a-z";
+            case "NUMBER":
+                return "0-9";
+            default:
+                return "";
+        }
     }
 
     public boolean isValidType(String str) {
-        if (isEmpty(str)) {
-            return false;
-        }
-        List<PatternType> types = typeList;
         StringBuilder sb = new StringBuilder();
         sb.append("[");
 
-        for (PatternType type : types) {
-            sb.append(type.getPattern());
+        for (String type : typeList) {
+            sb.append(getType(type));
         }
+
         sb.append("]+");
         if (!str.matches(sb.toString())) {
             logger.info("input doesn't match to type");
@@ -69,14 +80,14 @@ public class PatternValidation extends Validation {
         return true;
     }
 
-    public Map<PatternType, Integer> getCount(String str) {
-        Map<PatternType, Integer> countMap = new HashMap<>();
-        List<PatternType> types = typeList;
+    public Map<String, Integer> getCount(String str) {
+        Map<String, Integer> countMap = new HashMap<>();
 
         for (int i = 0; i < str.length(); i++) {
             String s = String.valueOf(str.charAt(i));
-            for (PatternType type : types) {
-                String pattern = "[" + type.getPattern() + "]+";
+            for (String type : typeList) {
+
+                String pattern = "[" + getType(type) + "]";
                 if (!s.matches(pattern)) {
                     continue;
                 }
@@ -88,37 +99,24 @@ public class PatternValidation extends Validation {
     }
 
 
-    public boolean isValidCount(String str, Map<PatternType, Integer> requiredMap, Def type) {
-        if (isEmpty(str)) {
-            return false;
-        }
-        Map<PatternType, Integer> countMap = getCount(str);
+    public boolean isValidCount(String str) {
+        Map<String, Integer> countMap = getCount(str);
 
-        for (Map.Entry<PatternType, Integer> entry : requiredMap.entrySet()) {
-            PatternType requiredType = entry.getKey();
+        for (Map.Entry<String, Integer> entry : minCountMap.entrySet()) {
+            String requiredType = entry.getKey();
             if (!countMap.containsKey(requiredType)) {
                 logger.info("input doesn't contain type =>{}", requiredType);
-                errorMsg = "input doesn't contain specific type. ";
+                errorMsg = "input doesn't contain specific type.";
                 return false;
             }
             int requiredCount = entry.getValue();
-            if (type.equals(MIN)) {
-                if (countMap.get(requiredType) < requiredCount) {
-                    logger.info("input is only found count =>{} which doesn't match to min required count =>{} of type => {}",
-                            countMap.get(requiredType), requiredCount, requiredType);
-                    errorMsg = "input doesn't meet the count of types. ";
-                    return false;
-                }
-            } else if (type.equals(MAX)) {
-                if (countMap.get(requiredType) > requiredCount) {
-                    logger.info("input is found count =>{} which doesn't match to max required count =>{} of type => {}",
-                            countMap.get(requiredType), requiredCount, requiredType);
-                    errorMsg = "input is over the the count of types. ";
-                    return false;
-                }
+            if (countMap.get(requiredType) < requiredCount) {
+                logger.info("input is only found count =>{} which doesn't match to min required count =>{} of type => {}",
+                        countMap.get(requiredType), requiredCount, requiredType);
+                errorMsg = "input doesn't meet the count of types.";
+                return false;
             }
         }
-
         return true;
     }
 }

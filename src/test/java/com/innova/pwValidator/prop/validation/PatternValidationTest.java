@@ -1,25 +1,20 @@
 package com.innova.pwValidator.prop.validation;
 
-import com.innova.pwValidator.prop.PatternType;
-import com.innova.pwValidator.prop.PwValidationSetting;
 import org.hamcrest.collection.IsMapContaining;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 
+import org.junit.jupiter.api.Assertions;
+
+import org.junit.jupiter.api.Test;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
-import java.util.Arrays;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static com.innova.pwValidator.prop.Def.MIN;
-import static com.innova.pwValidator.prop.PatternType.LOWERCASE;
-import static com.innova.pwValidator.prop.PatternType.NUMBER;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -28,21 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(classes = PatternValidation.class)
 class PatternValidationTest {
 
-    @Mock
+    @Autowired
     private PatternValidation patternValidation;
-    @Mock
-    private PwValidationSetting setting;
-
-    @BeforeEach
-    void init() {
-        setting = new PwValidationSetting();
-        Map<PatternType, Integer> map = new HashMap<>();
-        map.put(LOWERCASE, 1);
-        map.put(NUMBER, 1);
-        setting.setMinCountMap(map);
-        setting.setTypes(Arrays.asList(NUMBER, LOWERCASE));
-        patternValidation = new PatternValidation(setting);
-    }
 
     @Test
     void isValid() {
@@ -62,8 +44,13 @@ class PatternValidationTest {
     }
 
     @Test
-    void getErrorMsg() {
-        assertEquals(patternValidation.getErrorMsg(),"");
+    void getErrorMessage() {
+        assertEquals(patternValidation.getErrorMessage(),"");
+    }
+
+    @Test
+    void getSuccessMessage() {
+        assertEquals(patternValidation.getSuccessMessage(),"PatternValidation is passed.");
     }
 
 
@@ -79,7 +66,7 @@ class PatternValidationTest {
         Assertions.assertTrue(patternValidation.isValidType("a123bcd"));
     }
 
-    private void testMap(Map<PatternType, Integer> expected, Map<PatternType, Integer> testCase, int size) {
+    private void testMap(Map<String, Integer> expected, Map<String, Integer> testCase, int size) {
         assertThat(testCase.entrySet(), equalTo(expected.entrySet()));
         //Test size
         assertThat(testCase.values(), hasSize(size));
@@ -87,50 +74,50 @@ class PatternValidationTest {
 
     @Test
     void getCount() {
-        Map<PatternType, Integer> expected = new HashMap<>();
-        expected.put(LOWERCASE, 4);
-        expected.put(NUMBER, 3);
-        Map<PatternType, Integer> testCase = patternValidation.getCount("ab12Acd1");
+        Map<String, Integer> expected = new HashMap<>();
+        expected.put("LOWERCASE", 4);
+        expected.put("NUMBER", 3);
+        Map<String, Integer> testCase = patternValidation.getCount("ab12Acd1");
         testMap(expected, testCase, 2);
-        assertThat(testCase, IsMapContaining.hasEntry(LOWERCASE, 4));
-        assertThat(testCase, IsMapContaining.hasEntry(NUMBER, 3));
+        assertThat(testCase, IsMapContaining.hasEntry("LOWERCASE", 4));
+        assertThat(testCase, IsMapContaining.hasEntry("NUMBER", 3));
 
         expected = new HashMap<>();
         testCase = patternValidation.getCount("ZZZZZ");
         testMap(expected, testCase, 0);
 
         expected = new HashMap<>();
-        expected.put(LOWERCASE, 6);
-        expected.put(NUMBER, 4);
+        expected.put("LOWERCASE", 6);
+        expected.put("NUMBER", 4);
         testCase = patternValidation.getCount("acce1234,dp");
         testMap(expected, testCase, 2);
-        assertThat(testCase, IsMapContaining.hasEntry(LOWERCASE, 6));
-        assertThat(testCase, IsMapContaining.hasEntry(NUMBER, 4));
+        assertThat(testCase, IsMapContaining.hasEntry("LOWERCASE", 6));
+        assertThat(testCase, IsMapContaining.hasEntry("NUMBER", 4));
 
         expected = new HashMap<>();
-        expected.put(NUMBER, 4);
+        expected.put("NUMBER", 4);
         testCase = patternValidation.getCount("1111");
         testMap(expected, testCase, 1);
-        assertThat(testCase, IsMapContaining.hasEntry(NUMBER, 4));
+        assertThat(testCase, IsMapContaining.hasEntry("NUMBER", 4));
 
         expected = new HashMap<>();
-        expected.put(LOWERCASE, 2);
+        expected.put("LOWERCASE", 2);
         testCase = patternValidation.getCount("aa");
         testMap(expected, testCase, 1);
-        assertThat(testCase, IsMapContaining.hasEntry(LOWERCASE, 2));
+        assertThat(testCase, IsMapContaining.hasEntry("LOWERCASE", 2));
 
     }
 
     @Test
     void isValidCount() {
 
-        Assertions.assertFalse(patternValidation.isValidCount("11", setting.getMinCountMap(), MIN));
-        Assertions.assertFalse(patternValidation.isValidCount("aa", setting.getMinCountMap(), MIN));
-        Assertions.assertFalse(patternValidation.isValidCount("ADER12", setting.getMinCountMap(), MIN));
-        Assertions.assertFalse(patternValidation.isValidCount("bbbb", setting.getMinCountMap(), MIN));
-        Assertions.assertTrue(patternValidation.isValidCount("a1", setting.getMinCountMap(), MIN));
-        Assertions.assertTrue(patternValidation.isValidCount("a1234", setting.getMinCountMap(), MIN));
-        Assertions.assertTrue(patternValidation.isValidCount("?_v1", setting.getMinCountMap(), MIN));
+        Assertions.assertFalse(patternValidation.isValidCount("11"));
+        Assertions.assertFalse(patternValidation.isValidCount("aa"));
+        Assertions.assertFalse(patternValidation.isValidCount("ADER12"));
+        Assertions.assertFalse(patternValidation.isValidCount("bbbb"));
+        Assertions.assertTrue(patternValidation.isValidCount("a1"));
+        Assertions.assertTrue(patternValidation.isValidCount("a1234"));
+        Assertions.assertTrue(patternValidation.isValidCount("?_v1"));
 
     }
 }
