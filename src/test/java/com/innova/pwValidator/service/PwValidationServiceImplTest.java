@@ -29,17 +29,7 @@ class PwValidationServiceImplTest {
     private String patternPassed = "PatternValidation is passed.";
     private String lengthPassed = "LengthValidation is passed.";
 
-    @Mock
-    private LengthValidation lengthValidation;
-    @Mock
-    private PatternValidation patternValidation;
-    @Mock
-    private SequenceValidation sequenceValidation;
 
-    @Test
-    void init() {
-        pwValidationService.init();
-    }
 
 
     @Test

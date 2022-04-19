@@ -39,14 +39,14 @@ public class PasswordControllerTest {
     @Test
     void success() throws Exception {
         PasswordRequest req = new PasswordRequest("12cd32");
-        flow(req, "{'message':['LengthValidation is passed.','PatternValidation is passed.','SequenceValidation is passed.']}");
+        flow(req, "{'success':0,'message':['LengthValidation is passed.','PatternValidation is passed.','SequenceValidation is passed.']}");
     }
 
 
     @Test
     void failCase1() throws Exception {
         PasswordRequest req = new PasswordRequest("abab1231");
-        flow(req, "{'message':['LengthValidation is passed.','PatternValidation is passed.','input is repeated with sequence.']}");
+        flow(req, "{'success':-1,'message':['LengthValidation is passed.','PatternValidation is passed.','input is repeated with sequence.']}");
     }
 
 
@@ -54,19 +54,19 @@ public class PasswordControllerTest {
     @Test
     void failCase2() throws Exception {
         PasswordRequest req = new PasswordRequest("");
-        flow(req, "{'message':['input is empty.']}");
+        flow(req, "{'success':-1,'message':['input is empty.']}");
     }
 
     @Test
     void failCase3() throws Exception {
         PasswordRequest req = new PasswordRequest(null);
-        flow(req, "{'message':['input is empty.']}");
+        flow(req, "{'success':-1,'message':['input is empty.']}");
     }
 
     @Test
     void failCase4() throws Exception {
         PasswordRequest req = new PasswordRequest("1234asbhjioe1");
-        flow(req, "{'message':['input length is invalid.','PatternValidation is passed.','SequenceValidation is passed.']}");
+        flow(req, "{'success':-1,'message':['input length is invalid.','PatternValidation is passed.','SequenceValidation is passed.']}");
     }
 
     private String parseJsonStr(Object object) throws JsonProcessingException {
