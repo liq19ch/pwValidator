@@ -18,6 +18,6 @@ public class PasswordController {
 
     @PostMapping("/pwValidate")
     public PasswordResponse validatePassword(@Valid @RequestBody PasswordRequest passwordReq) {
-        return pwValidationService.valid(passwordReq.getPassword());
+        return pwValidationService.validate(passwordReq.getPassword());
     }
 }

@@ -12,6 +12,8 @@ import java.util.List;
 public class PasswordResponse {
 
 
+    private int success;
+
     private List<String> message;
 
 
