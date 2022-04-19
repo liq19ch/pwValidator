@@ -60,8 +60,11 @@ Request:
 
 Response:
 
+success will be responsed with -1 if there's a validation is failed. Otherwise, 0 will be responsed.
+
 ```
 {
+    "success": -1,
     "message": [
         "LengthValidation is passed.",
         "PatternValidation is passed.",
